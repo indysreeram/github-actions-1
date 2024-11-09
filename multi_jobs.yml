@@ -1,0 +1,33 @@
+name: Multi Job Example
+
+on: push
+
+jobs:
+    build_job:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Install cowsay program
+        run: sudo apt-get install cowsay -y
+      - name: Execute cowsay cmd
+        run: cowsay -f dragon "Err... I am a Dragon emitting fire !!" >> dragon.txt
+      - name : Sleep for 30s
+        run: sleep 30 
+
+    test_job:
+     runs-on: ubuntu-latest
+     steps:
+     - name: sleep 10s
+       run: sleep 10
+     - name: Test file exists
+       run: grep -i "dragon" dragon.txt
+
+    deploy_job:
+     runs-on: ubuntu-latest
+     steps:
+     - name: reading file
+       run: cat dragon.txt
+     - name: deploying
+       run: echo "deploying ...."
+
+      
+   
