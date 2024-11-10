@@ -10,15 +10,20 @@ jobs:
         run: sudo apt-get install cowsay -y
       - name: Execute cowsay cmd
         run: cowsay -f dragon "Err... I am a Dragon emitting fire !!" >> dragon.txt
-      - name : Sleep for 30s
-        run: sleep 30 
+      - name: Upload dragan file
+        uses: actions/upload-artifact@v4
+        with:
+         name: dragon-text-file
+         path: dragon.txt
 
     test_job:
      runs-on: ubuntu-latest
      needs: build_job
      steps:
-     - name: sleep 10s
-       run: sleep 10
+     - name: download dragan file
+       uses: actions/download-artifact@v4
+       with:
+          name: dragon-text-file
      - name: Test file exists
        run: grep -i "dragon" dragon.txt
 
@@ -26,6 +31,10 @@ jobs:
      runs-on: ubuntu-latest
      needs: [test_job]
      steps:
+     - name: download dragan file
+       uses: actions/download-artifact@v4
+       with:
+         name: dragon-text-file
      - name: reading file
        run: cat dragon.txt
      - name: deploying
